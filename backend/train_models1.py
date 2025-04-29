@@ -47,7 +47,7 @@ with open('models/vectorizer.pkl', 'wb') as f:
 models = {
     "logistic_regression": LogisticRegression(),
     "naive_bayes": MultinomialNB(),
-    "decision_tree": DecisionTreeClassifier(random_state=42),
+    "decision_tree": DecisionTreeClassifier(random_state=42, class_weight='balanced', max_depth=20, min_samples_split=10),
     "svc": SVC(probability=True)
 }
 

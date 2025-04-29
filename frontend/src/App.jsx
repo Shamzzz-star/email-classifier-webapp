@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import "./App.css";
+import './index.css';
+
 
 function App() {
   const [model, setModel] = useState("");
@@ -36,35 +41,33 @@ function App() {
     }
   };
 
-  const getBarColor = (value) => {
-    if (value <= 40) return "linear-gradient(to right, #10b981, #6ee7b7)"; // green gradient
-    if (value <= 70) return "linear-gradient(to right, #facc15, #fde68a)"; // yellow gradient
-    return "linear-gradient(to right, #ef4444, #fca5a5)"; // red gradient
+  const getCircleColor = (value) => {
+    // if (value <= 40) return "#10b981"; // Green for Ham
+    // if (value <= 70) return "#facc15"; // Yellow for Uncertain
+    return "#ef4444"; // Red for Spam
   };
-  
+
   const getLabel = (value) => {
     if (value <= 40) return "Ham";
     if (value <= 70) return "Uncertain";
     return "Spam";
   };
-  
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
-      <div className="bg-[#001f3f] p-8 rounded-xl shadow-lg w-full max-w-md text-white">
-        <h1 className="text-3xl font-bold mb-6 text-center">Email Classifier</h1>
-
-       
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 via-gray-900 to-black">
+      <div className="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-lg">
+        <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800 ">Email Classifier</h1>
 
         <textarea
-          className="w-full mb-4 p-2 rounded-md bg-gray-700 text-white"
-          rows="5"
+          className="w-full mb-4 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+          rows="10"
           placeholder="Enter email text..."
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
         ></textarea>
- <select
-          className="w-full mb-4 p-2 rounded-md bg-gray-700 text-white"
+
+        <select
+          className="w-full mb-4 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
           value={model}
           onChange={(e) => setModel(e.target.value)}
         >
@@ -75,37 +78,44 @@ function App() {
             </option>
           ))}
         </select>
+
         <button
           onClick={handleClassify}
           disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-md mb-4 transition"
+          className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white py-3 rounded-lg font-semibold transition"
         >
           {loading ? "Classifying..." : "Classify"}
         </button>
 
         {probability > 0 && (
-  <div className="space-y-3 mt-6">
-    <div className="text-center font-semibold text-white text-lg">
-      {getLabel(probability)}
+          <div className="flex flex-col items-center mt-8 p-4 bg-gray-100 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold text-gray-800 text-center">Prediction</h2>
+            <p className="text-lg text-gray-600 text-center">This email is likely:</p>
+            <div  className="flex justify-center items-center"  >
+              <div  style={{ padding:'50px', width: "200px", height: "200px" }}>
+              <CircularProgressbar
+                value={probability}
+                width='100px'
+                height='100px'
+                text={`${getLabel(probability)}`}
+                styles={buildStyles({
+                  textSize: "15px",
+                  pathColor: getCircleColor(probability),
+                  textColor: "#fff",
+                  trailColor: "#d1d5db",
+                  backgroundColor: "#3e98c7",
+                  alignItems: "center",
+                })}
+                />
+              </div>
+            </div>
+            <p className="text-lg text-gray-600 text-center">Probability:</p>
+            <p className="mt-4 text-lg font-bold text-gray-800 text-center">{probability}%</p>
+          </div>
+        )}
+      </div>
     </div>
-    <div className="w-full bg-gray-500 rounded-full h-4 overflow-hidden">
-      <div
-        className="h-4 transition-all duration-500"
-        style={{
-          width: `${probability}%`,
-          background: getBarColor(probability),
-        }}
-      ></div>
-    </div>
-    <div className="text-center font-bold text-white">{probability}%</div>
-  </div>
-)}
-
-    </div>
-  </div>
   );
 }
-  
-
 
 export default App;

@@ -22,15 +22,23 @@ def predict():
     data = request.get_json()
     model_name = data['model']
     text = data['text']
+    threshold = 0.5  # You can adjust this threshold as needed
 
     if model_name not in models:
         return jsonify({"error": "Invalid model selected"}), 400
 
     model = models[model_name]
     X = vectorizer.transform([text])
-    spam_probability = model.predict_proba(X)[0][1] * 100
+    probabilities = model.predict_proba(X)[0]
+    spam_prob = probabilities[1] * 100
 
-    return jsonify({"spam_probability": spam_probability})
+    prediction_label = "Spam" if probabilities[1] >= threshold else "Ham"
+
+    return jsonify({
+        "spam_probability": spam_prob,
+        "label": prediction_label
+    })
+
 
 if __name__ == '__main__':
     app.run(debug=True)

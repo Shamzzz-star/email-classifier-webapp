@@ -1,0 +1,85 @@
+/* Custom Global Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f4f8; /* Light background for better contrast */
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom loader styles */
+.loader {
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Gradient Text */
+.text-gradient {
+  background: linear-gradient(to right, #3b82f6, #9333ea);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Custom Shadow Effects */
+.custom-shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Button Hover Animation */
+.button-hover:hover {
+  transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Text Styling */
+.text-center {
+  text-align: center;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+/* Styling for Prediction Confidence */
+.confidence-bar {
+  height: 0.25rem;
+  border-radius: 0.25rem;
+  transition: width 0.5s ease;
+}
+
+.confidence-text {
+  font-weight: 700;
+  color: #4B5563; /* Dark gray */
+}
+
+/* Responsive Styles for smaller screens */
+@media (max-width: 640px) {
+  .text-xl {
+    font-size: 1rem; /* Smaller font on mobile */
+  }
+
+  .w-full {
+    width: 100%;
+  }
+
+  .max-w-lg {
+    max-width: 90%;
+  }
+
+  .p-8 {
+    padding: 2rem; /* Adjust padding for smaller screens */
+  }
+}

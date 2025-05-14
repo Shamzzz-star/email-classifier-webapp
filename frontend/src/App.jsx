@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./App.css";
@@ -6,6 +6,7 @@ import './index.css';
 
 
 function App() {
+  // App component starts here
   const [model, setModel] = useState("");
   const [inputText, setInputText] = useState("");
   const [probability, setProbability] = useState(0);
@@ -34,7 +35,7 @@ function App() {
         alert(data.error || "Something went wrong");
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error occurred while classifying the email:", error.message, error.stack);
       alert("Failed to connect to server");
     } finally {
       setLoading(false);
@@ -42,8 +43,8 @@ function App() {
   };
 
   const getCircleColor = (value) => {
-    // if (value <= 40) return "#10b981"; // Green for Ham
-    // if (value <= 70) return "#facc15"; // Yellow for Uncertain
+    if (value <= 40) return "#10b981";
+    if (value <= 70) return "#facc15"; // Yellow for Uncertain
     return "#ef4444"; // Red for Spam
   };
 
@@ -82,30 +83,35 @@ function App() {
         <button
           onClick={handleClassify}
           disabled={loading}
-          className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white py-3 rounded-lg font-semibold transition"
+          className="w-full from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white py-3 rounded-lg font-semibold transition"
         >
           {loading ? "Classifying..." : "Classify"}
         </button>
 
-        {probability > 0 && (
+        {probability !== null && (
           <div className="flex flex-col items-center mt-8 p-4 bg-gray-100 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold text-gray-800 text-center">Prediction</h2>
             <p className="text-lg text-gray-600 font-bold text-center">This email is likely:</p>
             <div className="progress-circle-container">
-  <div className="progress-circle font-bold">
-    <CircularProgressbar
-      value={probability}
-      text={`${getLabel(probability)}`}
-      styles={buildStyles({
-        textSize: "15px",
-        color: "#000000",
-        pathColor: getCircleColor(probability),
-        textColor: "#000000",
-        
-      })}
-    />
-  </div>
-</div>
+              <div className="progress-circle font-bold">
+                <CircularProgressbar
+                  value={probability}
+                  text={`${getLabel(probability)}`}
+                  styles={buildStyles({
+                    textSize: "15px",
+                    textColor: probability <= 40 ? "green" : probability <= 70 ? "yellow" : "red",
+                    pathColor: getCircleColor(probability),
+                  })}
+                />
+              </div>
+            </div>
+            <p
+              className={`text-lg font-bold text-center ${
+                probability <= 40 ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {getLabel(probability)}
+            </p>
             <p className="text-lg text-gray-800 font-bold text-center">Spam Probability</p>
             <p className="mt-4 text-lg font-bold text-gray-800 text-center">{probability}%</p>
           </div>

@@ -50,13 +50,13 @@ function App() {
   const getLabel = (value) => {
     if (value <= 40) return "Ham";
     if (value <= 70) return "Uncertain";
-    return "Spam";
+    return "SPAM";
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 via-gray-900 to-black">
       <div className="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-lg">
-        <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800 ">Email Classifier</h1>
+        <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-900 ">Email Spam Detector</h1>
 
         <textarea
           className="w-full mb-4 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
@@ -90,26 +90,23 @@ function App() {
         {probability > 0 && (
           <div className="flex flex-col items-center mt-8 p-4 bg-gray-100 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold text-gray-800 text-center">Prediction</h2>
-            <p className="text-lg text-gray-600 text-center">This email is likely:</p>
-            <div  className="flex justify-center items-center"  >
-              <div  style={{ padding:'50px', width: "200px", height: "200px" }}>
-              <CircularProgressbar
-                value={probability}
-                width='100px'
-                height='100px'
-                text={`${getLabel(probability)}`}
-                styles={buildStyles({
-                  textSize: "15px",
-                  pathColor: getCircleColor(probability),
-                  textColor: "#fff",
-                  trailColor: "#d1d5db",
-                  backgroundColor: "#3e98c7",
-                  alignItems: "center",
-                })}
-                />
-              </div>
-            </div>
-            <p className="text-lg text-gray-600 text-center">Probability:</p>
+            <p className="text-lg text-gray-600 font-bold text-center">This email is likely:</p>
+            <div className="progress-circle-container">
+  <div className="progress-circle font-bold">
+    <CircularProgressbar
+      value={probability}
+      text={`${getLabel(probability)}`}
+      styles={buildStyles({
+        textSize: "15px",
+        color: "#000000",
+        pathColor: getCircleColor(probability),
+        textColor: "#000000",
+        
+      })}
+    />
+  </div>
+</div>
+            <p className="text-lg text-gray-800 font-bold text-center">Spam Probability</p>
             <p className="mt-4 text-lg font-bold text-gray-800 text-center">{probability}%</p>
           </div>
         )}
